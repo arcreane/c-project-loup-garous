@@ -1,0 +1,6 @@
+C:\Users\willi\source\repos\Loup_Garou\Loup_Garou\bin\Debug\Loup_Garou.exe.config
+C:\Users\willi\source\repos\Loup_Garou\Loup_Garou\bin\Debug\Loup_Garou.exe
+C:\Users\willi\source\repos\Loup_Garou\Loup_Garou\bin\Debug\Loup_Garou.pdb
+C:\Users\willi\source\repos\Loup_Garou\Loup_Garou\obj\Debug\Loup_Garou.csprojAssemblyReference.cache
+C:\Users\willi\source\repos\Loup_Garou\Loup_Garou\obj\Debug\Loup_Garou.exe
+C:\Users\willi\source\repos\Loup_Garou\Loup_Garou\obj\Debug\Loup_Garou.pdb
