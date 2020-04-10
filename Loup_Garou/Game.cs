@@ -66,6 +66,7 @@ namespace Loup_Garou
         public void Play()
         {
             List<Personnages> allLife = new List<Personnages>(village);
+            bool JokerActive = true;
 
 
             Console.WriteLine("Cupidon va choisir deux ames soeurs");
@@ -84,6 +85,41 @@ namespace Loup_Garou
                 {
                     Console.WriteLine(villageois.name);
                 });
+                if (JokerActive)
+                {
+                    Console.WriteLine("Vous avez un joker voulez vous l'utiliser");
+                    Console.WriteLine("Y = yes / N = no");
+                    string UseJoker = Console.ReadLine();
+                    if (UseJoker == "Y")
+                    {
+                        JokerActive = false;
+                        int generatedIndex = random.Next(3);
+                        switch (generatedIndex)
+                        {
+                            case 1:
+                                /// Partie de Nouhailla 
+                                Console.WriteLine("Joker Sorciere");
+                                break;
+                            case 2:
+                                /// Partie de Amanda
+                                Console.WriteLine("Joker Voyante");
+                                break;
+                            case 3:
+                                /// Partie de Clement
+                                Console.WriteLine("Joker Voleur");
+                                break;
+                            default:
+                                Console.WriteLine("Default case");
+                                break;
+                        }
+
+                    }
+                    else if (UseJoker == "N")
+                    {
+                        Console.WriteLine("Vous n'utiliserais pas de joker aujourd'hui");
+                    }
+
+                }
                 for ( int i = 0; i < 5; i++)
                 {
                     Console.WriteLine("choissisez le personnage à interroger ou appuyer sur V pour passer au vote ");
