@@ -72,9 +72,33 @@ namespace Loup_Garou
             Console.WriteLine("Cupidon va choisir deux ames soeurs");
             for(int i = 0; i < 2; i++) 
             {
-                int generatedIndex = random.Next(allLife.Count);
-                allLife.ElementAt(generatedIndex).inLove = true;
-                ///Ajouter deux defence disant qu ils sont amoureux et retirer deux
+                bool isLove = true;
+                while (isLove)
+                {
+                    isLove = false;
+                    int generatedIndex = random.Next(allLife.Count);
+
+                    if(allLife.ElementAt(generatedIndex).inLove == true)
+                    {
+                        isLove = true;
+                        continue;
+                    }
+
+                    allLife.ElementAt(generatedIndex).inLove = true;
+
+                    for (int l = 0; l < 2; l++)
+                    {
+                        int generatedIndexDefences = random.Next(allLife.ElementAt(generatedIndex).defense.Count);
+                        allLife.ElementAt(generatedIndex).defense.RemoveAt(generatedIndexDefences);
+                    }
+
+                    allLife.ElementAt(generatedIndex).defense.Add("Je suis amoureux");
+                    allLife.ElementAt(generatedIndex).defense.Add("Je suis lié à une autre personne");
+                    Console.WriteLine(allLife.ElementAt(generatedIndex).name);
+                }
+                ///Ajouter deux defences disant qu ils sont amoureux et retirer deux EFFECTUER
+                ///patch deux fois le meme amoureux
+             
             }
             Console.WriteLine("Vous êtes le maire du village");
             Console.WriteLine("Il y a 15 villageois, parmis eux il y a 3 loup-garous, une sorcière, un voleur, une voyante, un cupidon, un bouc émissaire.");
@@ -120,6 +144,7 @@ namespace Loup_Garou
                     }
 
                 }
+                List<Personnages> allLifeDefences = new List<Personnages>(allLife);
                 for ( int i = 0; i < 5; i++)
                 {
                     Console.WriteLine("choissisez le personnage à interroger ou appuyer sur V pour passer au vote ");
@@ -128,17 +153,45 @@ namespace Loup_Garou
                     {
                         break;
                     }
-                    for(int l = 0; l < allLife.Count; l++) 
+                    bool badInterogate = true;
+                    bool findVilagers = false;
+                    while (badInterogate)
                     {
-                        if(namePerso == allLife.ElementAt(l).name) 
+                        for (int l = 0; l < allLifeDefences.Count; l++)
                         {
-                            int generatedIndex = random.Next(allLife.ElementAt(l).defense.Count);
-                            Console.WriteLine(allLife.ElementAt(l).defense.ElementAt(generatedIndex));
-                            allLife.ElementAt(l).defense.RemoveAt(generatedIndex);
-                            ///Mettre une securité pour dire qu il n a plus de defense
+
+                            if (namePerso == allLifeDefences.ElementAt(l).name)
+                            {
+                                findVilagers = true;
+                                badInterogate = false;
+                                if (allLifeDefences.ElementAt(l).defense.Count == 0)
+                                {
+                                    Console.WriteLine("Je ne veux plus vous parler");
+                                    allLifeDefences.RemoveAt(l);
+                                    break;
+                                }
+                                else
+                                {
+                                    int generatedIndex = random.Next(allLifeDefences.ElementAt(l).defense.Count);
+                                    Console.WriteLine(allLifeDefences.ElementAt(l).defense.ElementAt(generatedIndex));
+                                    allLife.ElementAt(l).defense.RemoveAt(generatedIndex);
+                                    allLifeDefences.RemoveAt(l);
+                                    break;
+                                }
+
+                                ///Mettre une securité pour dire qu il n a plus de defense EFFECTUER
+                            }
                         }
-                        ///il peut tjr choisir deux fois la meme personne a interroger
+                        if (!findVilagers)
+                        {
+                            Console.WriteLine("La personne à soit était interroger soit tu as mal ecris le nom");
+                            Console.WriteLine("choissisez le personnage à interroger ou appuyer sur V pour passer au vote ");
+                            namePerso = Console.ReadLine();
+                        }
                     }
+                    
+                    ///il peut tjr choisir deux fois la meme personne a interroger Effectuer
+                    
                      
                 }
                 /// Faire une boucle infini si il fait le con
@@ -150,6 +203,11 @@ namespace Loup_Garou
                     {
                         if(allLife.ElementAt(l).inLife == true) 
                         {
+                            if(allLife.ElementAt(l).role == "Loup-Garous")
+                            {
+                                Console.WriteLine("Vous gagnez un nouveau joker");
+                                JokerActive = true;
+                            }
                             if(allLife.ElementAt(l).inLove == true) 
                             {
                                 string role = allLife.ElementAt(l).role;
@@ -194,7 +252,6 @@ namespace Loup_Garou
                 Console.WriteLine("Le village s'endore \n\n\n");
                 /// l'elimination du loup garou
                 List<Personnages> allLifeWithoutLG = new List<Personnages>(allLife);
-                /// language stupide
                 for(int l = 0; l < 3; l++)
                 {
                     for (int i = 0; i < allLifeWithoutLG.Count; i++)

@@ -11,7 +11,7 @@ namespace Loup_Garou
         public Sorcière(String Name) : base(Name) { }
 
 
-        public override List<string> defense { get; set; } = new List<string>() { "", "" };
+        public override List<string> defense { get; set; } = new List<string>() { "je porte un chapeau pour me rendre beau", "je suis là pour vous jouer de mauvais tours !", "je me balade le soir", "je me prépare pour aller en soirée avec les autres villageois" };
 
         public override string role => "Sorcière";
 

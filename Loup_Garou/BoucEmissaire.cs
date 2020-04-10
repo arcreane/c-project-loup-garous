@@ -12,7 +12,7 @@ namespace Loup_Garou
 
      //   public override string name { get; set; } = "";
 
-        public override List<string> defense { get; set; } = new List<string>() { "Test1", "Test2" };
+        public override List<string> defense { get; set; } = new List<string>() { "Je me balade seul le soir", "Je n’aime pas le village", "Je ne veux pas vous répondre", "Je vais tous vous tuer !" };
 
         public override string role => "Bouc Emissaire";
 

@@ -10,7 +10,7 @@ namespace Loup_Garou
     {
         public LoupGarou(String name) : base(name){ }
 
-        public override List<string> defense { get; set; } = new List<string>() { "", "" };
+        public override List<string> defense { get; set; } = new List<string>() { "je me prépare pour aller en soirée avec les autres villageois", "Je me balade seul le soir", "Je vais tous vous tuer !", "Je ne veux pas vous répondre" };
 
         public override string role => "Loup-Garous";
 

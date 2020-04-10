@@ -10,7 +10,7 @@ namespace Loup_Garou
     {
         public Cupidon(String name) : base(name) { }
 
-        public override List<string> defense { get; set; } = new List<string>() { "", "" };
+        public override List<string> defense { get; set; } = new List<string>() { "je suis un personnage meetic", "j’adore jouer aux fléchettes", "je me prépare pour aller en soirée avec les autres villageois", "Je me balade seul le soir" };
 
         public override string role => "Cupidon";
 
