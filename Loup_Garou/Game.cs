@@ -35,6 +35,8 @@ namespace Loup_Garou
                 return new Game();
             }
         }
+        ///CREATION ET AJOUT DE LA LIST DU VILLAGES
+        ///ET ATTRIBUTION DES NAMES ALEATOIRES
         public void createGame() 
         {
             boucEmissaire = new BoucEmissaire(getName());
@@ -68,7 +70,7 @@ namespace Loup_Garou
             List<Personnages> allLife = new List<Personnages>(village);
             bool JokerActive = true;
 
-
+            ///MIS EN COUPLE DE DEUX VILLAGEOIS
             Console.WriteLine("Cupidon va choisir deux ames soeurs");
             for(int i = 0; i < 2; i++) 
             {
@@ -102,7 +104,7 @@ namespace Loup_Garou
             }
             Console.WriteLine("Vous êtes le maire du village");
             Console.WriteLine("Il y a 15 villageois, parmis eux il y a 3 loup-garous, une sorcière, un voleur, une voyante, un cupidon, un bouc émissaire.");
-            while (allDead == false) 
+            while (allDead == false)
             {
                 Console.WriteLine("\nVoici les villageois en vies :");
                 allLife.ForEach((villageois) =>
@@ -114,49 +116,66 @@ namespace Loup_Garou
                     Console.WriteLine("Vous avez un joker voulez vous l'utiliser");
                     Console.WriteLine("Y = yes / N = no");
                     string UseJoker = Console.ReadLine();
+                    bool chooseAswer = false;
                     if (UseJoker == "Y")
                     {
+                        chooseAswer = true;
                         JokerActive = false;
                         int generatedIndex = random.Next(3);
+                        Console.WriteLine(generatedIndex);
+                        Console.ReadLine();
                         switch (generatedIndex)
                         {
-                            case 1:
+                            case 0:
                                 /// Partie de Nouhailla 
                                 Console.WriteLine("Joker Sorciere");
                                 break;
-                            case 2:
+                            case 1:
                                 /// Partie de Amanda
                                 Console.WriteLine("Joker Voyante");
                                 break;
-                            case 3:
+                            case 2:
                                 /// Partie de Clement
                                 Console.WriteLine("Joker Voleur");
-                                break;
-                            default:
-                                Console.WriteLine("Default case");
                                 break;
                         }
 
                     }
                     else if (UseJoker == "N")
                     {
+                        chooseAswer = true;
                         Console.WriteLine("Vous n'utiliserais pas de joker aujourd'hui");
+                    }
+                    if (!chooseAswer)
+                    {
+                        Console.WriteLine("Tu as ecrit autre chose tu auras une autre chance demain");
                     }
 
                 }
+                ///ETAPES DE L INTEROGATOIRE
                 List<Personnages> allLifeDefences = new List<Personnages>(allLife);
-                for ( int i = 0; i < 5; i++)
+                bool skip = false;
+                for (int i = 0; i < 5; i++)
                 {
+                    if (skip)
+                    {
+                        break;
+                    }
                     Console.WriteLine("choissisez le personnage à interroger ou appuyer sur V pour passer au vote ");
                     string namePerso = Console.ReadLine();
+                    bool badInterogate = true;
+                    bool findVilagers = false;
                     if (namePerso == "V")
                     {
                         break;
                     }
-                    bool badInterogate = true;
-                    bool findVilagers = false;
                     while (badInterogate)
                     {
+                        if (namePerso == "V")
+                        {
+                            skip = true;
+                            break;
+                        }
                         for (int l = 0; l < allLifeDefences.Count; l++)
                         {
 
@@ -164,6 +183,8 @@ namespace Loup_Garou
                             {
                                 findVilagers = true;
                                 badInterogate = false;
+                                ///Si il n'y a plus de defences renvois un message par default
+                                ///Sinon affiche la deffence et la supprime de la list
                                 if (allLifeDefences.ElementAt(l).defense.Count == 0)
                                 {
                                     Console.WriteLine("Je ne veux plus vous parler");
@@ -178,10 +199,9 @@ namespace Loup_Garou
                                     allLifeDefences.RemoveAt(l);
                                     break;
                                 }
-
-                                ///Mettre une securité pour dire qu il n a plus de defense EFFECTUER
                             }
                         }
+                        ///MESSAGE D ERREUR SI AUCUNE VALIDATION DANS LES VERIFICTION PRECEDENTES
                         if (!findVilagers)
                         {
                             Console.WriteLine("La personne à soit était interroger soit tu as mal ecris le nom");
@@ -189,54 +209,73 @@ namespace Loup_Garou
                             namePerso = Console.ReadLine();
                         }
                     }
-                    
-                    ///il peut tjr choisir deux fois la meme personne a interroger Effectuer
-                    
-                     
+
+
                 }
-                /// Faire une boucle infini si il fait le con
-                Console.WriteLine("choississez une personne que vous souhaitez tuer");
+                ///ETAPE DU VOTE POUR TUER UNE PERSONNE DU VILLAGE
+                ///AJOUT DE JOKER
+                ///ELIMINATION DES PERSONNES ET AUSSI DU COUPLE
+                Console.WriteLine("choississez une personne que vous souhaitez tuer ou votez blanc \"Blanc\"");
                 string vote = Console.ReadLine();
-                for (int l = 0; l < allLife.Count; l++)
-                {
-                    if (vote == allLife.ElementAt(l).name)
+                bool badVote = true;
+                bool findVote = false;
+                while (badVote) {
+
+                    if (vote == "Blanc")
                     {
-                        if(allLife.ElementAt(l).inLife == true) 
+                        Console.WriteLine("Vous avez decidez de ne votez personne");
+                        badVote = false;
+                        break;
+                    }
+                    for (int l = 0; l < allLife.Count; l++)
+                    {
+                        if (vote == allLife.ElementAt(l).name)
                         {
-                            if(allLife.ElementAt(l).role == "Loup-Garous")
+                            findVote = true;
+                            badVote = false;
+                            if (allLife.ElementAt(l).inLife == true)
                             {
-                                Console.WriteLine("Vous gagnez un nouveau joker");
-                                JokerActive = true;
-                            }
-                            if(allLife.ElementAt(l).inLove == true) 
-                            {
-                                string role = allLife.ElementAt(l).role;
-                                string name = allLife.ElementAt(l).name;
-                                allLife.ElementAt(l).inLife = false;
-                                allLife.ElementAt(l).inLove = false;
-                                allLife.RemoveAt(l);
-                                for (int n = 0; n < allLife.Count; n++)
+                                if (allLife.ElementAt(l).role == "Loup-Garous")
                                 {
-                                    if(allLife.ElementAt(n).inLove == true)
+                                    Console.WriteLine("Vous gagnez un nouveau joker");
+                                    JokerActive = true;
+                                }
+                                if (allLife.ElementAt(l).inLove == true)
+                                {
+                                    string role = allLife.ElementAt(l).role;
+                                    string name = allLife.ElementAt(l).name;
+                                    allLife.ElementAt(l).inLife = false;
+                                    allLife.ElementAt(l).inLove = false;
+                                    allLife.RemoveAt(l);
+                                    for (int n = 0; n < allLife.Count; n++)
                                     {
-                                        allLife.ElementAt(n).inLife = false;
-                                        allLife.ElementAt(n).inLove = false;
-                                        Console.WriteLine("Vous avez decidez d'éliminer " + name + " qui était " + role );
-                                        Console.WriteLine("Par le chagrin de perdre son ame soeur " + allLife.ElementAt(n).name + " decide de mettre fin à ces jours et qui était " + allLife.ElementAt(n).role);
-                                        allLife.RemoveAt(n);
+                                        if (allLife.ElementAt(n).inLove == true)
+                                        {
+                                            allLife.ElementAt(n).inLife = false;
+                                            allLife.ElementAt(n).inLove = false;
+                                            Console.WriteLine("Vous avez decidez d'éliminer " + name + " qui était " + role);
+                                            Console.WriteLine("Par le chagrin de perdre son ame soeur " + allLife.ElementAt(n).name + " decide de mettre fin à ces jours et qui était " + allLife.ElementAt(n).role);
+                                            allLife.RemoveAt(n);
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                allLife.ElementAt(l).inLife = false;
-                                Console.WriteLine("Vous avez decidez d'éliminer " + allLife.ElementAt(l).name + " qui était " + allLife.ElementAt(l).role);
-                                allLife.RemoveAt(l);
+                                else
+                                {
+                                    allLife.ElementAt(l).inLife = false;
+                                    Console.WriteLine("Vous avez decidez d'éliminer " + allLife.ElementAt(l).name + " qui était " + allLife.ElementAt(l).role);
+                                    allLife.RemoveAt(l);
+                                }
                             }
                         }
                     }
-                }
-                ///Verification que tout les loups garous sont en vie
+                    if (!findVote)
+                    {
+                        Console.WriteLine("La personne à soit était deja etait tuer soit tu as mal ecris le nom");
+                        Console.WriteLine("choissisez le personnage à voter ou appuyer sur Blanc pour ne pas voter ");
+                        vote = Console.ReadLine();
+                    }
+                }   
+                ///VERIFICATION DES LOUPS GAROUS VIVANTS
                 allLgDead = true;
                 allLife.ForEach((villageois) =>
                 {
@@ -250,7 +289,12 @@ namespace Loup_Garou
                     break;
                 }
                 Console.WriteLine("Le village s'endore \n\n\n");
-                /// l'elimination du loup garou
+                ///ELIMINATION DES LOUPS GAROUS
+                ///
+                ///PREMIERE ETAPES ON ENLEVE LES LOUPS GAROUS DES ALL LIFE
+                ///DEUXIEME ETAPES ON PREND UN VILLAGEOIS ALEATOIRES
+                ///ET ON CHECK SI EST EN COUPLE
+                ///ELIMINATION DU VILLAGEOIS
                 List<Personnages> allLifeWithoutLG = new List<Personnages>(allLife);
                 for(int l = 0; l < 3; l++)
                 {
@@ -267,6 +311,10 @@ namespace Loup_Garou
                 int generatedIndexLG = random.Next(allLifeWithoutLG.Count);
                 for(int i = 0; i < allLife.Count; i++)
                 {
+                    if(allLifeWithoutLG.Count == 0)
+                    {
+                        break;
+                    }
                     if(allLife.ElementAt(i).name == allLifeWithoutLG.ElementAt(generatedIndexLG).name) 
                     {
                         if(allLife.ElementAt(i).inLove == true)
@@ -296,11 +344,24 @@ namespace Loup_Garou
                         
                     }
                 }
-                
+                ///Deuxieme Verification au cas ou c etait le derniere villageois
+                List<Personnages> gameOverCheck = new List<Personnages>(allLife);
+                for (int l = 0; l < 3; l++)
+                {
+                    for (int i = 0; i < gameOverCheck.Count; i++)
+                    {
+                        if (gameOverCheck.ElementAt(i).role == "Loup-Garous")
+                        {
+                            gameOverCheck.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+
 
                 /// Game Over
 
-                if(allLifeWithoutLG.Count == 0)
+                if (gameOverCheck.Count == 0)
                 {
                     allDead = true;
                 }
