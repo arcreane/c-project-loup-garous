@@ -16,7 +16,7 @@ namespace Loup_Garou
 
         public override List<string> defense { get; set; } = new List<string>() { "je me prépare pour aller en soirée avec les autres villageois", "Viens faire la fête avec nous !", "Tu me payes quand le Mcdo ?", "Wesh la famille ca dit quoi ?" };
 
-        public override string role => "Villageois";
+        public override string role { get; set; } = "Villageois";
 
         public override bool inLife { get; set; } = true;
 

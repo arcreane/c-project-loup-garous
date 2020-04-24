@@ -12,7 +12,7 @@ namespace Loup_Garou
 
         public override List<string> defense { get; set; } = new List<string>() { "je suis un personnage meetic", "j’adore jouer aux fléchettes", "je me prépare pour aller en soirée avec les autres villageois", "Je me balade seul le soir" };
 
-        public override string role => "Cupidon";
+        public override string role { get; set; } = "Cupidon";
 
         public override bool inLife { get; set; } = true;
         public override bool inLove { get; set; } = false;

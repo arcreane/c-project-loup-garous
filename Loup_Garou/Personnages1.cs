@@ -27,6 +27,7 @@ namespace Loup_Garou
         public abstract string role
         {
             get;
+            set;
         
         }
         public abstract bool inLife
