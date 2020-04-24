@@ -23,7 +23,8 @@ namespace Loup_Garou
             else if (choice == "2")
             {
                 Console.WriteLine("Voici les regles");
-                Console.WriteLine("Flemmes d ecrire");
+                Rules rules = new Rules();
+                rules.allRules();
                 Console.WriteLine("\n\n\nLancez le jeu 1");
                 choice = Console.ReadLine();
                 if(choice == "1")

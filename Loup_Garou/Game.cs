@@ -9,6 +9,7 @@ namespace Loup_Garou
 {
     class Game
     {
+        
         bool allDead = false;
         bool allLgDead = false;
         private Random random = new Random();
@@ -20,6 +21,7 @@ namespace Loup_Garou
         List<Personnages> allLifeDefences = new List<Personnages>();
         bool JokerActive = true;
         BoucEmissaire boucEmissaire;
+        LoupGarou loupgarou;
         Cupidon cupidon;
         Sorcière sorcière;
         Voleur voleur;
@@ -30,13 +32,6 @@ namespace Loup_Garou
             String personnageName = name.ElementAt(generatedIndex);
             name.RemoveAt(generatedIndex);
             return personnageName;
-        }
-        public static Game Instance
-        {
-            get
-            {
-                return new Game();
-            }
         }
         ///CREATION ET AJOUT DE LA LIST DU VILLAGES
         ///ET ATTRIBUTION DES NAMES ALEATOIRES
@@ -63,39 +58,6 @@ namespace Loup_Garou
             {   
                 loupGarou[i] = new LoupGarou(getName());
                 village.Add(loupGarou[i]);
-            }
-        }
-
-        private void cupidonPlay()
-        {
-            Console.WriteLine("Cupidon va choisir deux ames soeurs");
-            for (int i = 0; i < 2; i++)
-            {
-                bool isLove = true;
-                while (isLove)
-                {
-                    isLove = false;
-                    int generatedIndex = random.Next(allLife.Count);
-
-                    if (allLife.ElementAt(generatedIndex).inLove == true)
-                    {
-                        isLove = true;
-                        continue;
-                    }
-
-                    allLife.ElementAt(generatedIndex).inLove = true;
-
-                    for (int l = 0; l < 2; l++)
-                    {
-                        int generatedIndexDefences = random.Next(allLife.ElementAt(generatedIndex).defense.Count);
-                        allLife.ElementAt(generatedIndex).defense.RemoveAt(generatedIndexDefences);
-                    }
-
-                    allLife.ElementAt(generatedIndex).defense.Add("Je suis amoureux");
-                    allLife.ElementAt(generatedIndex).defense.Add("Je suis lié à une autre personne");
-                }
-
-
             }
         }
 
@@ -245,135 +207,16 @@ namespace Loup_Garou
                     switch (generatedIndex)
                     {
                         case 0:
-                            /// Partie de Nouhailla 
-                            Console.WriteLine("Joker Sorciere");
-                            // on vérifie si c'est bien la sorcière et qu'elle est envie 
-                            bool isSorciereDead = true;
-                            for (int l = 0; l < allLife.Count; l++)
-                            {
-                                if (allLife.ElementAt(l).role == "Sorcière")
-                                {
-                                    // si elle n'est pas morte alors on lance son jocker 
-                                    isSorciereDead = false;
 
-                                    List<Personnages> isDeadWithoutLG = new List<Personnages>(isDead);
-                                    // on ne veut pas que les loup garoup revive
-                                    for (int a = 0; a < 3; a++)
-                                    {
-                                        for (int i = 0; i < isDeadWithoutLG.Count; i++)
-                                        {
-                                            if (isDeadWithoutLG.ElementAt(i).role == "Loup-Garous")
-                                            {
-                                                isDeadWithoutLG.RemoveAt(i);
-                                                break;
-                                            }
-                                        }
-
-                                    }
-                                    if (isDeadWithoutLG.Count == 0)
-                                    {
-                                        Console.WriteLine("Il n'y a personne a sauvé dommage");
-                                    }
-                                    else
-                                    {
-                                        int generatedIndexisDead = random.Next(isDeadWithoutLG.Count);
-                                        string name = isDeadWithoutLG.ElementAt(generatedIndexisDead).name;
-                                        isDead.ElementAt(generatedIndexisDead).inLife = true;
-                                        allLife.Add(isDead.ElementAt(generatedIndexisDead));
-                                        isDead.RemoveAt(generatedIndexisDead);
-                                        isDeadWithoutLG.RemoveAt(generatedIndexisDead);
-                                        Console.WriteLine("Cette personne est sauvé " + name);
-                                    }
-
-
-
-
-
-
-                                }
-                            };
-                            if (isSorciereDead == true)
-                            {
-                                Console.WriteLine("Le jocker Sorcière est mort");
-                            };
-
+                            sorcière.joker(allLife, isDead);
 
                             break;
                         case 1:
-                            /// Partie de Amanda
-                            Console.WriteLine("Joker Voyante");
-                            bool VoyanteIsDead = true;
-
-                            for (int l = 0; l < allLife.Count; l++)
-                            {
-                                if (allLife.ElementAt(l).role == "Voyante")
-                                {
-                                    VoyanteIsDead = false;
-
-                                    List<Personnages> WithoutVoyante = new List<Personnages>(allLife);
-                                    for (int V = 0; V < WithoutVoyante.Count; V++)
-                                    {
-                                        if (WithoutVoyante.ElementAt(V).role == "Voyante")
-                                        {
-                                            WithoutVoyante.RemoveAt(V);
-                                            break;
-                                        }
-
-                                    }
-                                    int seeRole = random.Next(allLife.Count);
-                                    Console.WriteLine("Je sais que " + allLife.ElementAt(seeRole).name + " est " + allLife.ElementAt(seeRole).role);
-
-                                }
-                            }
-                            //si la voyante est morte
-                            if (VoyanteIsDead == true)
-                            {
-                                Console.WriteLine("Votre joker est mort");
-                            }
-
+                            voyante.joker(allLife);
                             break;
 
                         case 2:
-                            /// Partie de Clement
-                            Console.WriteLine("Joker Voleur");
-                            bool isVoleurDead = true;
-                            for (int l = 0; l < allLife.Count; l++)
-                            {
-                                /// check si le voleur est en vie ou si il est mort
-                                if (allLife.ElementAt(l).role == "Voleur")
-                                {
-                                    List<Personnages> WithoutVoleur = new List<Personnages>(allLife);
-                                    for (int V = 0; V < WithoutVoleur.Count; V++)
-                                    {
-                                        if (WithoutVoleur.ElementAt(V).role == "Voleur")
-                                        {
-                                            WithoutVoleur.RemoveAt(V);
-                                            break;
-                                        }
-                                    }
-                                    isVoleurDead = false;
-                                    int indexAllLifeOne = random.Next(WithoutVoleur.Count);
-                                    int indexAllLifeTwo = random.Next(WithoutVoleur.Count);
-                                    string villageoisOne = WithoutVoleur.ElementAt(indexAllLifeOne).role;
-                                    string villageoisTwo = WithoutVoleur.ElementAt(indexAllLifeTwo).role;
-                                    List<string> defenseVillageoisOne = WithoutVoleur.ElementAt(indexAllLifeOne).defense;
-                                    List<string> defenseVillageoisTwo = WithoutVoleur.ElementAt(indexAllLifeTwo).defense;
-                                    string newRoleOne = villageoisTwo;
-                                    List<string> newDefenseOne = defenseVillageoisTwo;
-                                    string newRoleTwo = villageoisOne;
-                                    List<string> newDefenseTwo = defenseVillageoisOne;
-                                    allLife.ElementAt(indexAllLifeOne).role = newRoleOne;
-                                    allLife.ElementAt(indexAllLifeOne).defense = newDefenseOne;
-                                    allLife.ElementAt(indexAllLifeTwo).role = newRoleTwo;
-                                    allLife.ElementAt(indexAllLifeTwo).defense = newDefenseTwo;
-                                    Console.WriteLine("Deux villageois ont changés de role");
-
-                                }
-                            }
-                            if (isVoleurDead == true)
-                            {
-                                Console.WriteLine("votre joker est morte");
-                            }
+                            voleur.joker(allLife);
                             break;
                     }
 
@@ -391,7 +234,7 @@ namespace Loup_Garou
             }
         }
 
-        private void killLG()
+        public void killLG()
         {
             List<Personnages> allLifeWithoutLG = new List<Personnages>(allLife);
             for (int l = 0; l < 3; l++)
@@ -455,7 +298,7 @@ namespace Loup_Garou
            this.JokerActive = true;
 
             ///MIS EN COUPLE DE DEUX VILLAGEOIS
-            cupidonPlay();
+            cupidon.cupidonPlay(allLife);
 
             useJoker();
 
@@ -464,11 +307,16 @@ namespace Loup_Garou
             Console.WriteLine("Il y a 15 villageois, parmis eux il y a 3 loup-garous, une sorcière, un voleur, une voyante, un cupidon, un bouc émissaire.");
             while (allDead == false)
             {
+               
                 Console.WriteLine("\nVoici les villageois en vies :");
-                allLife.ForEach((villageois) =>
+                List<Personnages> allLifeRandomzie = new List<Personnages>(allLife);
+                for(int r = 0; 0 < allLifeRandomzie.Count; r++)
                 {
-                    Console.WriteLine(villageois.name);
-                });
+                    int generatedIndex = random.Next(allLifeRandomzie.Count);
+                    Console.WriteLine(allLifeRandomzie.ElementAt(generatedIndex).name);
+                    allLifeRandomzie.RemoveAt(generatedIndex);
+
+                };
                 
                 ///ETAPES DE L INTEROGATOIRE
                 interrogatory();
