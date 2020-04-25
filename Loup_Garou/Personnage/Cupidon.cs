@@ -17,7 +17,7 @@ namespace Loup_Garou
 
         public override bool inLife { get; set; } = true;
 
-        public void cupidonPlay(List<Personnages> allLife)
+        public void cupidPlay(List<Personnages> allLife)
         {
             Console.WriteLine("Cupidon va choisir deux ames soeurs");
             int generatedIndexOne = random.Next(allLife.Count);

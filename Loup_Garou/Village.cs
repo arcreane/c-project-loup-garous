@@ -11,11 +11,11 @@ namespace Loup_Garou
         private Random random = new Random();
         List<string> name = new List<string>() { "Macron", "Trump", "Kim Jong-un", "Aya Nakamura", "Ninho", "Bad Bunny", "Booba", "Kaaris", "Dominique", "Ariana", "Angèle", "Obama", "Steve Job", "Elon Musk", "Marge Simpson" };
 
-        BoucEmissaire boucEmissaire;
-        Cupidon cupidon;
-        Sorcière sorcière;
-        Voleur voleur;
-        Voyante voyante;
+        BoucEmissaire scapegoat;
+        Cupidon cupid;
+        Sorcière witch;
+        Voleur thief;
+        Voyante clairvoyant;
 
         private String getName()
         {
@@ -25,51 +25,51 @@ namespace Loup_Garou
             return personnageName;
         }
 
-        public void initVillage(List<Personnages> village)
+        public void initVillage(List<Personnages> town)
         {
-            this.boucEmissaire = new BoucEmissaire(getName());
-            this.cupidon = new Cupidon(getName());
-            this.sorcière = new Sorcière(getName());
-            this.voleur = new Voleur(getName());
-            this.voyante = new Voyante(getName());
-            village.Add(boucEmissaire);
-            village.Add(cupidon);
-            village.Add(sorcière);
-            village.Add(voleur);
-            village.Add(voyante);
-            Villageois[] villageois = new Villageois[7];
+            this.scapegoat = new BoucEmissaire(getName());
+            this.cupid = new Cupidon(getName());
+            this.witch = new Sorcière(getName());
+            this.thief = new Voleur(getName());
+            this.clairvoyant = new Voyante(getName());
+            town.Add(scapegoat);
+            town.Add(cupid);
+            town.Add(witch);
+            town.Add(thief);
+            town.Add(clairvoyant);
+            Villageois[] villagers = new Villageois[7];
             for (int i = 0; i < 7; i++)
             {
-                villageois[i] = new Villageois(getName());
-                village.Add(villageois[i]);
+                villagers[i] = new Villageois(getName());
+                town.Add(villagers[i]);
             }
-            LoupGarou[] loupGarou = new LoupGarou[3];
+            LoupGarou[] werewolf = new LoupGarou[3];
             for (int i = 0; i < 3; i++)
             {
-                loupGarou[i] = new LoupGarou(getName());
-                village.Add(loupGarou[i]);
+                werewolf[i] = new LoupGarou(getName());
+                town.Add(werewolf[i]);
             }
         }
 
-        public Cupidon getCupidon()
+        public Cupidon getCupid()
         {
-            return cupidon;
+            return cupid;
         }
-        public Voleur getVoleur()
+        public Voleur getThief()
         {
-            return voleur;
+            return thief;
         }
-        public Sorcière getSorcière()
+        public Sorcière getWitch()
         {
-            return sorcière;
+            return witch;
         }
-        public Voyante getVoyante()
+        public Voyante getClairvoyant()
         {
-            return voyante;
+            return clairvoyant;
         }
-        public BoucEmissaire getBoucEmissaire()
+        public BoucEmissaire getScapegoat()
         {
-            return boucEmissaire;
+            return scapegoat;
         }
     }
 }
