@@ -16,7 +16,6 @@ namespace Loup_Garou
         public override string role { get; set; } = "Voleur";
 
         public override bool inLife { get; set; } = true;
-        public override bool inLove { get; set; } = false;
 
         public void joker(List<Personnages> allLife)
         {
@@ -40,14 +39,14 @@ namespace Loup_Garou
                     isVoleurDead = false;
                     int indexAllLifeOne = random.Next(WithoutVoleur.Count);
                     int indexAllLifeTwo = random.Next(WithoutVoleur.Count);
-                    string villageoisOne = WithoutVoleur.ElementAt(indexAllLifeOne).role;
-                    string villageoisTwo = WithoutVoleur.ElementAt(indexAllLifeTwo).role;
-                    List<string> defenseVillageoisOne = WithoutVoleur.ElementAt(indexAllLifeOne).defense;
-                    List<string> defenseVillageoisTwo = WithoutVoleur.ElementAt(indexAllLifeTwo).defense;
-                    string newRoleOne = villageoisTwo;
-                    List<string> newDefenseOne = defenseVillageoisTwo;
-                    string newRoleTwo = villageoisOne;
-                    List<string> newDefenseTwo = defenseVillageoisOne;
+                    string villagersOne = WithoutVoleur.ElementAt(indexAllLifeOne).role;
+                    string villagersTwo = WithoutVoleur.ElementAt(indexAllLifeTwo).role;
+                    List<string> defenseVillagersOne = WithoutVoleur.ElementAt(indexAllLifeOne).defense;
+                    List<string> defenseVillagersTwo = WithoutVoleur.ElementAt(indexAllLifeTwo).defense;
+                    string newRoleOne = villagersTwo;
+                    List<string> newDefenseOne = defenseVillagersTwo;
+                    string newRoleTwo = villagersOne;
+                    List<string> newDefenseTwo = defenseVillagersOne;
                     allLife.ElementAt(indexAllLifeOne).role = newRoleOne;
                     allLife.ElementAt(indexAllLifeOne).defense = newDefenseOne;
                     allLife.ElementAt(indexAllLifeTwo).role = newRoleTwo;

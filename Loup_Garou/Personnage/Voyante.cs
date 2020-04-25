@@ -16,7 +16,6 @@ namespace Loup_Garou
         public override string role { get; set; } = "Voyante";
 
         public override bool inLife { get; set; } = true;
-        public override bool inLove { get; set; } = false;
 
         public void joker(List<Personnages> allLife)
         {

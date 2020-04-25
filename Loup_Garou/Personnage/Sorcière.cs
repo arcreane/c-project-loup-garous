@@ -17,7 +17,6 @@ namespace Loup_Garou
         public override string role { get; set; } = "Sorcière";
 
         public override bool inLife { get; set; } = true;
-        public override bool inLove { get; set; } = false;
 
         public void joker(List<Personnages> allLife, List<Personnages> isDead)
         {
@@ -60,12 +59,6 @@ namespace Loup_Garou
                         isDeadWithoutLG.RemoveAt(generatedIndexisDead);
                         Console.WriteLine("Cette personne est sauvé " + name);
                     }
-
-
-
-
-
-
                 }
             };
             if (isSorciereDead == true)

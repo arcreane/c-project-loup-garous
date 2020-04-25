@@ -10,33 +10,45 @@ namespace Loup_Garou
     {
         static void Main(string[] args)
         {
-            ///Debut du jeu
-            Console.WriteLine("Bonjour et bienvenue dans le village de Panam");
-            Console.WriteLine("Choissiez entre: \n 1 - Jouez \n 2 - Regle");
-            string choice = Console.ReadLine();
-            if (choice == "1")
+            bool playGame = true;
+            while (playGame)
             {
-                Game game =new Game();
-                game.createGame();
-                game.Play();
-            }
-            else if (choice == "2")
-            {
-                Console.WriteLine("Voici les regles");
-                Rules rules = new Rules();
-                rules.allRules();
-                Console.WriteLine("\n\n\nLancez le jeu 1");
-                choice = Console.ReadLine();
-                if(choice == "1")
+                ///Debut du jeu
+                Console.WriteLine("Bonjour et bienvenue dans le village de Panam");
+                Console.WriteLine("Choissiez entre: \n 1 - Jouez \n 2 - Regle\n 3 - Quittez le jeu");
+                string choice = Console.ReadLine();
+                if (choice == "1")
                 {
                     Game game = new Game();
                     game.createGame();
                     game.Play();
                 }
-                
-
-
+                else if (choice == "2")
+                {
+                    Console.WriteLine("Voici les regles");
+                    Rules rules = new Rules();
+                    rules.allRules();
+                    Console.WriteLine("\n\n\n1 - Jouez \n2 - Quittez le jeu ");
+                    choice = Console.ReadLine();
+                    if (choice == "1")
+                    {
+                        Game game = new Game();
+                        game.createGame();
+                        game.Play();
+                    }
+                    else if(choice == "2")
+                    {
+                        playGame = false;
+                        break;
+                    }
+                }
+                else if (choice == "3")
+                {
+                    playGame = false;
+                    break;
+                }
             }
+           
         }
     }
 }

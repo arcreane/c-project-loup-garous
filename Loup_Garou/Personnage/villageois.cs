@@ -20,7 +20,6 @@ namespace Loup_Garou
 
         public override bool inLife { get; set; } = true;
 
-        public override bool inLove { get; set; } = false;
 
     }
 }

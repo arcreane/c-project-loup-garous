@@ -38,10 +38,10 @@ namespace Loup_Garou
         }
 
 
-        public abstract bool inLove
+        public Personnages inLove
         {
             get;
             set;
-        }
+        } = null;
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Personnage\Voleur.cs" />
     <Compile Include="Personnage\Voyante.cs" />
     <Compile Include="Rules.cs" />
+    <Compile Include="Village.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

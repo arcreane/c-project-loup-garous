@@ -13,52 +13,29 @@ namespace Loup_Garou
         bool allDead = false;
         bool allLgDead = false;
         private Random random = new Random();
-        List<string> name = new List<string>() { "Macron", "Trump", "Kim Jong-un", "Aya Nakamura", "Ninho", "Bad Bunny", "Booba", "Kaaris", "Dominique", "Ariana", "Angèle", "Obama", "Steve Job", "Elon Musk", "Marge Simpson" };
+        Village townInit = new Village();
 
-        List<Personnages> village = new List<Personnages>();
+        List<Personnages> town = new List<Personnages>();
         List<Personnages> allLife = new List<Personnages>();
         List<Personnages> isDead = new List<Personnages>();
         List<Personnages> allLifeDefences = new List<Personnages>();
         bool JokerActive = true;
-        BoucEmissaire boucEmissaire;
-        LoupGarou loupgarou;
-        Cupidon cupidon;
-        Sorcière sorcière;
-        Voleur voleur;
-        Voyante voyante;
-        private String getName()
-        {
-            int generatedIndex = random.Next(name.Count);
-            String personnageName = name.ElementAt(generatedIndex);
-            name.RemoveAt(generatedIndex);
-            return personnageName;
-        }
+        BoucEmissaire scapegoat;
+        Cupidon cupid;
+        Sorcière witch;
+        Voleur thief;
+        Voyante clairvoyant;
+        
         ///CREATION ET AJOUT DE LA LIST DU VILLAGES
         ///ET ATTRIBUTION DES NAMES ALEATOIRES
-        public void createGame() 
+        public void createGame()
         {
-            boucEmissaire = new BoucEmissaire(getName());
-            cupidon = new Cupidon(getName());
-            sorcière = new Sorcière(getName());
-            voleur = new Voleur(getName());
-            voyante = new Voyante(getName());
-            village.Add(boucEmissaire);
-            village.Add(cupidon);
-            village.Add(sorcière);
-            village.Add(voleur);
-            village.Add(voyante);
-            Villageois[] villageois = new Villageois[7];
-            for (int i = 0; i < 7; i++)
-            {
-                villageois[i] = new Villageois(getName());
-                village.Add(villageois[i]);
-            }
-            LoupGarou[] loupGarou = new LoupGarou[3];
-            for (int i = 0; i < 3; i++)
-            {   
-                loupGarou[i] = new LoupGarou(getName());
-                village.Add(loupGarou[i]);
-            }
+            townInit.initVillage(town);
+            cupid = townInit.getCupid();
+            witch = townInit.getWitch();
+            thief = townInit.getThief();
+            clairvoyant = townInit.getClairvoyant();
+            scapegoat = townInit.getScapegoat();
         }
 
         public void votePlayer()
@@ -88,26 +65,28 @@ namespace Loup_Garou
                                     Console.WriteLine("Vous gagnez un nouveau joker");
                                     JokerActive = true;
                                 }
-                                if (allLife.ElementAt(l).inLove == true)
+                                if (allLife.ElementAt(l).inLove != null)
                                 {
-                                    string role = allLife.ElementAt(l).role;
-                                    string name = allLife.ElementAt(l).name;
+                                    string role = allLife.ElementAt(l).inLove.role;
+                                    string name = allLife.ElementAt(l).inLove.name;
                                     allLife.ElementAt(l).inLife = false;
-                                    allLife.ElementAt(l).inLove = false;
+                                    allLife.ElementAt(l).inLove = null;
                                     isDead.Add(allLife.ElementAt(l));
-                                    allLife.RemoveAt(l);
-                                    for (int n = 0; n < allLife.Count; n++)
+                                    Console.WriteLine("Vous avez decidez d'éliminer " + allLife.ElementAt(l).name + " qui était " + allLife.ElementAt(l).role);
+                                    Console.WriteLine("Par le chagrin de perdre son ame soeur " + name + " decide de mettre fin à ces jours et qui était " + role);
+                                    for(int n = 0; n < allLife.Count; n++)
                                     {
-                                        if (allLife.ElementAt(n).inLove == true)
+                                        if (allLife.ElementAt(n).name == name)
                                         {
-                                            allLife.ElementAt(n).inLife = false;
-                                            allLife.ElementAt(n).inLove = false;
-                                            Console.WriteLine("Vous avez decidez d'éliminer " + name + " qui était " + role);
-                                            Console.WriteLine("Par le chagrin de perdre son ame soeur " + allLife.ElementAt(n).name + " decide de mettre fin à ces jours et qui était " + allLife.ElementAt(n).role);
-                                            isDead.Add(allLife.ElementAt(l));
-                                            allLife.RemoveAt(n);
-                                        }
+                                        isDead.Add(allLife.ElementAt(n));
+                                        allLife.ElementAt(n).inLife = false;
+                                        allLife.ElementAt(n).inLove = null;
+                                        allLife.RemoveAt(n);
+                                        allLife.RemoveAt(l);
+                                        break;
+                                        }   
                                     }
+                                   
                                 }
                                 else
                                 {
@@ -208,15 +187,15 @@ namespace Loup_Garou
                     {
                         case 0:
 
-                            sorcière.joker(allLife, isDead);
+                            witch.joker(allLife, isDead);
 
                             break;
                         case 1:
-                            voyante.joker(allLife);
+                            clairvoyant.joker(allLife);
                             break;
 
                         case 2:
-                            voleur.joker(allLife);
+                            thief.joker(allLife);
                             break;
                     }
 
@@ -258,24 +237,25 @@ namespace Loup_Garou
                 }
                 if (allLife.ElementAt(i).name == allLifeWithoutLG.ElementAt(generatedIndexLG).name)
                 {
-                    if (allLife.ElementAt(i).inLove == true)
+                    if (allLife.ElementAt(i).inLove != null)
                     {
-                        string role = allLife.ElementAt(i).role;
-                        string name = allLife.ElementAt(i).name;
+                        string role = allLife.ElementAt(i).inLove.role;
+                        string name = allLife.ElementAt(i).inLove.name;
                         allLife.ElementAt(i).inLife = false;
-                        allLife.ElementAt(i).inLove = false;
+                        allLife.ElementAt(i).inLove = null;
                         isDead.Add(allLife.ElementAt(i));
-                        allLife.RemoveAt(i);
+                        Console.WriteLine("Vous avez decidez d'éliminer " + allLife.ElementAt(i).name + " qui était " + allLife.ElementAt(i).role);
+                        Console.WriteLine("Par le chagrin de perdre son ame soeur " + name + " decide de mettre fin à ces jours et qui était " + role);
                         for (int n = 0; n < allLife.Count; n++)
                         {
-                            if (allLife.ElementAt(n).inLove == true)
+                            if (allLife.ElementAt(n).name == name)
                             {
-                                allLife.ElementAt(n).inLife = false;
-                                allLife.ElementAt(n).inLove = false;
-                                Console.WriteLine("Le Village se reveille sans " + name + " qui était " + role);
-                                Console.WriteLine("Par le chagrin de perdre son ame soeur " + allLife.ElementAt(n).name + " decide de mettre fin à ces jours et qui était " + allLife.ElementAt(n).role);
                                 isDead.Add(allLife.ElementAt(n));
+                                allLife.ElementAt(n).inLife = false;
+                                allLife.ElementAt(n).inLove = null;
                                 allLife.RemoveAt(n);
+                                allLife.RemoveAt(i);
+                                break;
                             }
                         }
                     }
@@ -290,15 +270,17 @@ namespace Loup_Garou
             }
         }
 
+        /// DIFFERENTE METHOD UTILISE
+
         public void Play()
         {
-           this.allLife = new List<Personnages>(village);
+           this.allLife = new List<Personnages>(town);
            this.isDead = new List<Personnages>();
            this.allLifeDefences = new List<Personnages>(allLife);
            this.JokerActive = true;
 
             ///MIS EN COUPLE DE DEUX VILLAGEOIS
-            cupidon.cupidonPlay(allLife);
+            cupid.cupidPlay(allLife);
 
             useJoker();
 
@@ -347,7 +329,6 @@ namespace Loup_Garou
                 ///DEUXIEME ETAPES ON PREND UN VILLAGEOIS ALEATOIRES
                 ///ET ON CHECK SI EST EN COUPLE
                 ///ELIMINATION DU VILLAGEOIS
-
                 killLG();
 
                 ///Deuxieme Verification au cas ou c etait le derniere villageois
