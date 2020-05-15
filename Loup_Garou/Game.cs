@@ -8,34 +8,17 @@ using System.Threading.Tasks;
 namespace Loup_Garou
 {
     class Game
-    {
-        
-        bool allDead = false;
-        bool allLgDead = false;
+    { 
         private Random random = new Random();
-        Village townInit = new Village();
-
-        List<Personnages> town = new List<Personnages>();
-        List<Personnages> allLife = new List<Personnages>();
-        List<Personnages> isDead = new List<Personnages>();
-        List<Personnages> allLifeDefences = new List<Personnages>();
-        bool JokerActive = true;
-        BoucEmissaire scapegoat;
-        Cupidon cupid;
-        Sorcière witch;
-        Voleur thief;
-        Voyante clairvoyant;
+        Village myTown = new Village();      
+        
+        bool JokerActive = true; 
         
         ///CREATION ET AJOUT DE LA LIST DU VILLAGES
         ///ET ATTRIBUTION DES NAMES ALEATOIRES
         public void createGame()
         {
-            townInit.initVillage(town);
-            cupid = townInit.getCupid();
-            witch = townInit.getWitch();
-            thief = townInit.getThief();
-            clairvoyant = townInit.getClairvoyant();
-            scapegoat = townInit.getScapegoat();
+            myTown.initVillage(); 
         }
 
         public void votePlayer()
@@ -52,49 +35,21 @@ namespace Loup_Garou
                         badVote = false;
                         break;
                     }
-                    for (int l = 0; l < allLife.Count; l++)
-                    {
-                        if (vote == allLife.ElementAt(l).name)
+                    for (int l = 0; l < myTown.getAllCharacterAlive().Count; l++)
+                    foreach (var personnage in myTown.getAllCharacterAlive())
+                    {                    
+                        if (vote == personnage.name)
                         {
                             findVote = true;
                             badVote = false;
-                            if (allLife.ElementAt(l).inLife == true)
+                            if (personnage.inLife == true)
                             {
-                                if (allLife.ElementAt(l).role == "Loup-Garous")
+                                if (personnage.role == "Loup-Garous")
                                 {
                                     Console.WriteLine("Vous gagnez un nouveau joker");
                                     JokerActive = true;
                                 }
-                                if (allLife.ElementAt(l).inLove != null)
-                                {
-                                    string role = allLife.ElementAt(l).inLove.role;
-                                    string name = allLife.ElementAt(l).inLove.name;
-                                    allLife.ElementAt(l).inLife = false;
-                                    allLife.ElementAt(l).inLove = null;
-                                    isDead.Add(allLife.ElementAt(l));
-                                    Console.WriteLine("Vous avez decidez d'éliminer " + allLife.ElementAt(l).name + " qui était " + allLife.ElementAt(l).role);
-                                    Console.WriteLine("Par le chagrin de perdre son ame soeur " + name + " decide de mettre fin à ces jours et qui était " + role);
-                                    for(int n = 0; n < allLife.Count; n++)
-                                    {
-                                        if (allLife.ElementAt(n).name == name)
-                                        {
-                                        isDead.Add(allLife.ElementAt(n));
-                                        allLife.ElementAt(n).inLife = false;
-                                        allLife.ElementAt(n).inLove = null;
-                                        allLife.RemoveAt(n);
-                                        allLife.RemoveAt(l);
-                                        break;
-                                        }   
-                                    }
-                                   
-                                }
-                                else
-                                {
-                                    allLife.ElementAt(l).inLife = false;
-                                    Console.WriteLine("Vous avez decidez d'éliminer " + allLife.ElementAt(l).name + " qui était " + allLife.ElementAt(l).role);
-                                    isDead.Add(allLife.ElementAt(l));
-                                    allLife.RemoveAt(l);
-                                }
+                                 myTown.Kill(personnage);
                             }
                         }
                     }
@@ -151,7 +106,7 @@ namespace Loup_Garou
                             {
                                 int generatedIndex = random.Next(allLifeDefences.ElementAt(l).defense.Count);
                                 Console.WriteLine(allLifeDefences.ElementAt(l).defense.ElementAt(generatedIndex));
-                                allLife.ElementAt(l).defense.RemoveAt(generatedIndex);
+                                personnage.defense.RemoveAt(generatedIndex);
                                 allLifeDefences.RemoveAt(l);
                                 break;
                             }

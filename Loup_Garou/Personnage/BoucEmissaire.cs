@@ -8,7 +8,7 @@ namespace Loup_Garou
 {
     class BoucEmissaire : Personnages
     {
-        public BoucEmissaire(String name):base(name) { }
+        public BoucEmissaire(String name, Village village):base(name, village) { }
 
         public override List<string> defense { get; set; } = new List<string>() { "Je me balade seul le soir", "Je n’aime pas le village", "Je ne veux pas vous répondre", "Je vais tous vous tuer !" };
 
